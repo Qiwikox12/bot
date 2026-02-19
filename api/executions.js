@@ -1,18 +1,23 @@
-import { kv } from '@vercel/kv';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// api/executions.js — CommonJS версия
+const kv = require('@vercel/kv').kv;  // или const { kv } = require('@vercel/kv');
 
 const KEY = 'total_executions';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method === 'GET') {
-    const count = (await kv.get<number>(KEY)) ?? 0;
-    return res.status(200).json({ total: count });
-  }
+module.exports = async (req, res) => {
+  try {
+    if (req.method === 'GET') {
+      const count = await kv.get(KEY);
+      return res.status(200).json({ total: count ? Number(count) : 0 });
+    }
 
-  if (req.method === 'POST') {
-    const newCount = await kv.incr(KEY);
-    return res.status(200).json({ total: newCount });
-  }
+    if (req.method === 'POST') {
+      const newCount = await kv.incr(KEY);
+      return res.status(200).json({ total: newCount });
+    }
 
-  return res.status(405).json({ error: 'Method not allowed' });
-}
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  } catch (error) {
+    console.error('Error:', error.message || error);
+    return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+};
