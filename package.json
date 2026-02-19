@@ -1,6 +1,7 @@
 {
   "name": "counter",
   "version": "1.0.0",
+  "type": "module",                  
   "dependencies": {
     "@vercel/kv": "latest"
   }
