@@ -1,0 +1,13 @@
+{
+  "name": "quadrant-bot",
+  "version": "1.0.0",
+  "description": "Quadrant Bot launcher for Mineflayer",
+  "main": "main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "mineflayer": "^4.20.1"
+  }
+}
